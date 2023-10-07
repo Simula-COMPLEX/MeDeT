@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Sartaj"
+  given-names: "Hassan"
+  orcid: "https://orcid.org/0000-0001-5212-9787"
+title: "MeDeT: Few-Shot Meta-Learning for Generating High-Fidelity Digital Twins of Medical Devices"
+version: 0.0.1
+date-released: 2023-10-01
+url: "https://github.com/Simula-COMPLEX/MeDeT"
