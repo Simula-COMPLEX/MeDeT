@@ -5,11 +5,14 @@ Created on September 03, 2023
 @version: 1.0
 """
 
-from metads.DataGenerator import send_request
+from dsgen.DataGenerator import compile_device_data
+
+file_separator = ";"
 
 if __name__ == '__main__':
     print("Phase 1: Data Generation")
     json_conf = {"device": {"configs": {}}}
-    [res, time_device, httpcode_device] = send_request(method="get", url="", json_option=json_conf,
-                                                       print_opt=0)
-    print("Received data: \n", res)
+    d_url=""
+    parameters = []
+    file_path = ""
+    compile_device_data(file_path, file_separator, parameters, d_url, json_conf)
