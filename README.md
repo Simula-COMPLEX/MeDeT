@@ -1,6 +1,6 @@
-# MeDeT: Meta-Learning-based Digital Twins of Medical Devices
+# MeDeT: Few-Shot Meta-Learning for Generating High-Fidelity Digital Twins of Medical Devices
 
-A tool for building and operating digital twins of medical devices to be used with healthcare IoT applications for testing. 
+A tool for building, adapting, and operating digital twins of medical devices to be used with healthcare IoT applications for testing. 
 This work is a part of the Welfare Technology Solution project (WTT4Oslo).
 
 [//]: # (The repository contains open-source implementation)
