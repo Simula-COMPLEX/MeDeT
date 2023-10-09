@@ -12,7 +12,7 @@ import json
 dts_map = {}
 
 
-def clone_model(devices_names, ml_root_dir, in_root_dir, st_root_dir, dtsnum, exp_shots, json_conf):
+def clone_model_storage(devices_names, ml_root_dir, in_root_dir, st_root_dir, dtsnum, exp_shots, json_conf):
     ml_names = []
     json_object = json.dumps(json_conf, indent=4)
     dts_shot_map = {}
