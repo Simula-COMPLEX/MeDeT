@@ -44,7 +44,7 @@ if __name__ == '__main__':
     compile_device_data(file_path, file_separator, parameters, d_url, json_conf)
 
     print("Phase 2: Data Preparation")
-    processed_files = preprocess_rawdata(files=dataset_files, file_separator=file_separator)
+    processed_files, data_encoder = preprocess_rawdata(files=dataset_files, file_separator=file_separator)
 
     print("Phase 3: Meta-learning - Training")
     train_dtmodel(devices_names, parameters, processed_files, ml_root_dir, ex_name, shots, num_tasks, maml_lr, meta_lr, total_iterations, tps, adaption_steps)
@@ -54,6 +54,6 @@ if __name__ == '__main__':
     clone_model_storage(devices_names, ml_root_dir, in_root_dir, st_root_dir, dtsnum, exp_shots, json_conf)
 
     print("Phase 5&6: DTs Request Handling and Device Communication")
-    DTServer.init_server(dts_map, status_codes_map, devices_names, parameters)
+    DTServer.init_server(dts_map, status_codes_map, devices_names, parameters, data_encoder)
     DTServer.start_server(host="0.0.0.0", port=5000)
 

@@ -9,6 +9,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 import json
 import torch
+import pandas as pd
 
 # ------------------------
 # Create DT Server & APIs
@@ -21,6 +22,7 @@ dts_map = {}
 status_codes_map = {}
 devices_names = []
 params = []
+data_encoder = None
 
 
 def get_dtmodel_response(dtm_path, edata):
@@ -32,11 +34,6 @@ def get_dtmodel_response(dtm_path, edata):
         output = t_model(input)
         prediction = int(torch.max(output.data, 1)[1].numpy())
         return prediction
-
-
-def decode_json_object(json_obj, parameters):
-    data_values = []
-    return data_values
 
 
 # ---------------------
@@ -79,7 +76,7 @@ class RequestHandler(Resource):
                     device_name = dev_n
                     break
 
-            edata = decode_json_object(data, params)
+            edata = data_encoder.inverse_transform(data)
             prediction = get_dtmodel_response(dtm_path, edata)
             sc_map = status_codes_map[device_name]
             inv_status_codes_map = {v: k for k, v in sc_map.items()}
@@ -99,14 +96,15 @@ class RequestHandler(Resource):
 # ------------------------
 class DTServer:
     @staticmethod
-    def init_server(dt_map, sc_map, dev_names, devparams):
+    def init_server(dt_map, sc_map, dev_names, devparams, data_enc):
         api.add_resource(RequestHandler, "/devdt/<string:dtname>/<string:shot>/<int:num>/<string:dtmodel>")
-        global dts_map, status_codes_map, devices_names, params
+        global dts_map, status_codes_map, devices_names, params, data_encoder
         dts_map = dt_map
         status_codes_map = sc_map
         devices_names = dev_names
         params = devparams
-        # TODO: add link to physical device
+        data_encoder = data_enc
+        # here: add link to physical device
 
     @staticmethod
     def start_server(host, port):

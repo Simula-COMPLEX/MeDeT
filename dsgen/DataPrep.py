@@ -27,7 +27,7 @@ def preprocess_data_sk(file, file_separator):
     new_df = pd.DataFrame(new_x, columns=df.columns[0:feature_cols - 1])
     new_df = new_df.assign(response_status_code=new_y)
 
-    return new_df
+    return new_df, data_encoder
 
 
 def preprocess_rawdata(files, file_separator):
@@ -35,8 +35,8 @@ def preprocess_rawdata(files, file_separator):
     for file in files:
         # write to file
         file_name = file.replace("raw", "pro")
-        df = preprocess_data_sk(file, file_separator)
+        df, data_encoder = preprocess_data_sk(file, file_separator)
         df.to_csv(file_name, sep=file_separator, encoding="utf-8", index=False)
         processed_files.append(file_name)
 
-    return processed_files
+    return processed_files, data_encoder
