@@ -9,10 +9,12 @@ import shutil
 import os
 import json
 
-dts_map = {}
 
-
+# -------------------------------
+# Create DTs clones and storages
+# -------------------------------
 def clone_model_storage(devices_names, ml_root_dir, in_root_dir, st_root_dir, dtsnum, exp_shots, json_conf):
+    dts_map = {}
     ml_names = []
     json_object = json.dumps(json_conf, indent=4)
     dts_shot_map = {}
@@ -37,7 +39,6 @@ def clone_model_storage(devices_names, ml_root_dir, in_root_dir, st_root_dir, dt
             data_path += "/" + es
             if not os.path.exists(data_path):
                 os.mkdir(data_path)
-            print("data path: ", data_path)
 
             sn_list = []
             # iterate all shots folders
@@ -67,3 +68,5 @@ def clone_model_storage(devices_names, ml_root_dir, in_root_dir, st_root_dir, dt
                         i += 1
 
             dts_map[dn + "-" + es] = dts_shot_map
+    print("Created DT clones and storages")
+    return dts_map

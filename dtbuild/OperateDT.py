@@ -9,7 +9,6 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 import json
 import torch
-import pandas as pd
 
 # ------------------------
 # Create DT Server & APIs
@@ -18,6 +17,7 @@ import pandas as pd
 app = Flask(__name__.split(".")[0])
 # creating an API object
 api = Api(app)
+api_res = "/devdt/<string:dtname>/<string:shot>/<int:num>/<string:dtmodel>"
 dts_map = {}
 status_codes_map = {}
 devices_names = []
@@ -29,9 +29,9 @@ def get_dtmodel_response(dtm_path, edata):
     with torch.no_grad():
         t_model = torch.load(dtm_path)
         t_model.eval()
-        input = torch.tensor(edata, dtype=torch.float64)
-        input = input.view(1, len(edata))
-        output = t_model(input)
+        m_input = torch.tensor(edata, dtype=torch.float64)
+        m_input = m_input.view(1, len(edata))
+        output = t_model(m_input)
         prediction = int(torch.max(output.data, 1)[1].numpy())
         return prediction
 
@@ -97,8 +97,8 @@ class RequestHandler(Resource):
 class DTServer:
     @staticmethod
     def init_server(dt_map, sc_map, dev_names, devparams, data_enc):
-        api.add_resource(RequestHandler, "/devdt/<string:dtname>/<string:shot>/<int:num>/<string:dtmodel>")
-        global dts_map, status_codes_map, devices_names, params, data_encoder
+        global api_res, dts_map, status_codes_map, devices_names, params, data_encoder
+        api.add_resource(RequestHandler, api_res)
         dts_map = dt_map
         status_codes_map = sc_map
         devices_names = dev_names
@@ -108,7 +108,10 @@ class DTServer:
 
     @staticmethod
     def start_server(host, port):
+        global api_res
         print("Starting DT Server at host:: {}".format(host) + " - port:: {}".format(str(port)))
+        api_url = "http://{}:{}".format(host, port) + api_res
+        print("DT API URL: ", api_url)
         from waitress import serve
         serve(app, host=host, port=port)
         app.run(debug=True)
