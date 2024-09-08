@@ -1,4 +1,4 @@
-# MeDeT: A Tool for Generating Medical Devices Digital Twins
+# MeDeT: Medical Devices Digital Twins Generation with Meta-learning
 
 The MeDeT approach focuses on building, adapting, and operating high-fidelity digital twins (DTs) of medical devices, employing few-shot meta-learning techniques. These medical devices DTs are designed to streamline testing automation for healthcare IoT applications. 
 
